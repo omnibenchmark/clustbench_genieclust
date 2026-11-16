@@ -125,33 +125,30 @@ def do_ica(X, Ks):
 def main():
     parser = argparse.ArgumentParser(description='clustbench geniecluster runner')
 
-    parser.add_argument('--data.matrix', type=str,
+    parser.add_argument('--data_matrix', type=str,
                         help='gz-compressed textfile containing the comma-separated data to be clustered.', required = True)
-    parser.add_argument('--data.true_labels', type=str,
+    parser.add_argument('--data_true_labels', type=str,
                         help='gz-compressed textfile with the true labels; used to select a range of ks.', required = True)
-    parser.add_argument('--output_dir', type=str,
-                        help='output directory to store data files.')
-    parser.add_argument('--name', type=str, help='name of the dataset', default='clustbench')
+    parser.add_argument('--output', action='append', default=[],
+                        help='id=PATH, one per output the stage declares (api 0.8.0).')
     parser.add_argument('--method', type=str,
                         help='geniecluster method',
                         required = True)
     parser.add_argument('--gini_threshold', type=str,
                         help='g',
                         required = False)
-    try:
-        args = parser.parse_args()
-    except:
-        parser.print_help()
-        sys.exit(0)
+    # ob still passes --output_dir and --name until api 0.10; they are ignored.
+    args, _ = parser.parse_known_args()
+    outputs = dict(o.split('=', 1) for o in args.output)
 
     if args.method not in VALID_METHODS:
         raise ValueError(f"Invalid method `{args.method}`")
     
-    truth = load_labels(getattr(args, 'data.true_labels'))
+    truth = load_labels(args.data_true_labels)
     k = int(max(truth)) # true number of clusters
     Ks = generate_k_range(k)
     
-    data = getattr(args, 'data.matrix')
+    data = args.data_matrix
 
     if args.method == 'genie':        
         curr = do_genie(X= load_dataset(data), Ks = Ks, g = float(args.gini_threshold))
@@ -160,12 +157,11 @@ def main():
     elif args.method == 'ica':
         curr = do_ica(X= load_dataset(data), Ks = Ks)
 
-    name = args.name
 
     header=['k=%s'%s for s in Ks.values()]
     
     curr = np.append(np.array(header).reshape(1,5), curr.astype(str), axis=0)
-    np.savetxt(os.path.join(args.output_dir, f"{name}_ks_range.labels.gz"),
+    np.savetxt(outputs['clustering_predicted_ks_range'],
                curr, fmt='%s', delimiter=",")#,
                # header = ','.join(header)) 
 
