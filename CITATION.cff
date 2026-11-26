@@ -22,7 +22,7 @@ references:
     doi: "10.1016/j.softx.2022.101270"
     url: "https://clustering-benchmarks.gagolewski.com"
 
-  - type: dataset
+  - type: data
     authors:
       - family-names: "Gagolewski"
         given-names: "Marek"
@@ -45,3 +45,40 @@ references:
     pages: "8-23"
     year: 2016
     doi: "10.1016/j.ins.2016.05.003"
+
+  # The libraries this module calls, with the versions its environment pins
+  # where a package rather than a paper is cited.
+
+  - type: article
+    authors:
+      - {family-names: "Gagolewski", given-names: "Marek"}
+    title: "genieclust: Fast and robust hierarchical clustering"
+    journal: "SoftwareX"
+    volume: "15"
+    start: "100722"
+    year: 2021
+    doi: "10.1016/j.softx.2021.100722"
+
+  - type: thesis
+    authors:
+      - {family-names: "Cena", given-names: "Anna"}
+    title: "Adaptive hierarchical clustering algorithms based on data aggregation methods"
+    thesis-type: "PhD thesis"
+    institution:
+      name: "Systems Research Institute, Polish Academy of Sciences"
+    year: 2018
+    notes: "Genie+Information Criterion (GIc), as cited by genieclust.GIc."
+
+  - type: conference-paper
+    authors:
+      - {family-names: "Müller", given-names: "Andreas C."}
+      - {family-names: "Nowozin", given-names: "Sebastian"}
+      - {family-names: "Lampert", given-names: "Christoph H."}
+    title: "Information theoretic clustering using minimum spanning trees"
+    collection-title: "Pattern Recognition (DAGM/OAGM 2012)"
+    collection-type: "Lecture Notes in Computer Science"
+    start: "205"
+    end: "215"
+    year: 2012
+    doi: "10.1007/978-3-642-32717-9_21"
+    notes: "The information-theoretic criterion behind the ica method (genieclust.GIc)."
